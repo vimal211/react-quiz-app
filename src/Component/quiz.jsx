@@ -27,6 +27,11 @@ function Quiz({setStop,setQuestionNumber,questionNumber,data}) {
           }, duration);
     }
 
+    useEffect(()=>{
+        // eslint-disable-next-line no-lone-blocks
+        {questionNumber>15 ? setStop(true) : setStop(false)};
+    },[questionNumber,setStop])
+
     const handleClick=(a)=>{
         setSelectedAnswer(a);
         setClassName("answer active");
