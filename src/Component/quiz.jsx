@@ -1,15 +1,44 @@
-import React from 'react';
+import React ,{useState,useEffect}from 'react';
 import './quiz.css'
 
-function Quiz() {
+function Quiz({setStop,setQuestionNumber,questionNumber,data}) {
+
+    const [question, setQuestion] = useState(null);
+    const [selectedAnswer,setSelectedAnswer] =  useState(null);
+    const [className,setClassName] =  useState("answer");
+
+    useEffect(() => {
+        setQuestion(data[questionNumber - 1]);
+      }, [data, questionNumber]);
+
+    const delay =(duration,callback)=>{
+        setTimeout(() => {
+            callback();
+          }, duration);
+    }
+
+    const handleClick=(a)=>{
+        setSelectedAnswer(a);
+        setClassName("answer active");
+        delay(1500,()=>setClassName(a.correct ? "answer correct" :"answer wrong"))
+        delay(5000,()=>{
+            if(a.correct){
+                setQuestionNumber((prev)=>prev+1);
+                setSelectedAnswer(null);
+            }
+            else{
+                setStop(true);
+            }
+        })
+    };
+
     return (
         <div className="quiz">
-            <div className="question">What is the best Battle Royal game?</div>
+            <div className="question">{question?.question}</div>
             <div className="answers">
-                <div className="answer">PUBG</div>
-                <div className="answer wrong">Fortnite</div>
-                <div className="answer">Apex Legends</div>
-                <div className="answer">Battlefield</div>
+                {question?.answers.map((a)=>(
+                   <div className={selectedAnswer === a ? className : "answer"} onClick={() =>  handleClick(a)}>{a.text}</div>
+                ))}        
             </div>
         </div>
     )

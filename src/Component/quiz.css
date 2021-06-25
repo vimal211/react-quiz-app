@@ -42,7 +42,7 @@
 }
 
 .answer.correct{
-    animation: correct 5s ease forwards;
+    animation: correct 4s ease forwards;
 }
 
 @keyframes correct{
